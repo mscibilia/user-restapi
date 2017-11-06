@@ -1,2 +1,10 @@
+#Maven
 target/
+
+#Eclipse
+.settings/
+.classpath
+.project
+
+#Hibernate
 **test*.db

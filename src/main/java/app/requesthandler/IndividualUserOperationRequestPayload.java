@@ -2,14 +2,17 @@ package app.requesthandler;
 
 import app.model.User;
 
-public class CreateUserRequestPayload implements Validable {
+/**
+ * Generic request payload for an operation (get, update, delete) on a single 'User' entity.
+ */
+public class IndividualUserOperationRequestPayload implements Validable {
 	
 	private User user;
 	
 	/**
 	 * @param user
 	 */
-	public CreateUserRequestPayload(User user) {
+	public IndividualUserOperationRequestPayload(User user) {
 		this.user = user;
 	}
 

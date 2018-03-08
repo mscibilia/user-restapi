@@ -5,14 +5,14 @@ import java.util.Map;
 import app.model.User;
 import app.persistence.UserHelper;
 
-public class CreateUserRequestHandler extends AbstractRequestHandler<CreateUserRequestPayload> {
+public class CreateUserRequestHandler extends AbstractRequestHandler<IndividualUserOperationRequestPayload> {
 
-	public CreateUserRequestHandler(Class<CreateUserRequestPayload> requestPayload) {
+	public CreateUserRequestHandler(Class<IndividualUserOperationRequestPayload> requestPayload) {
 		super(requestPayload);
 	}
 
 	@Override
-	public Answer processImpl(CreateUserRequestPayload createUserRequestPayload, Map<String, String> urlParams) {
+	public Answer processImpl(IndividualUserOperationRequestPayload createUserRequestPayload, Map<String, String> urlParams) {
 		try {
 			User incomingUser = createUserRequestPayload.getUser();
 			UserHelper.getInstance().addUser(incomingUser);

@@ -19,7 +19,7 @@ public class GetUserRequestHandler extends AbstractRequestHandler<EmptyRequestPa
 		if (user != null)	{
 			return new Answer(200, gson.toJson(user));
 		}	else	{
-			return new Answer(4500, "User with specified ID not found");
+			return new Answer(404, "User with specified ID not found");
 		}
 	}
 

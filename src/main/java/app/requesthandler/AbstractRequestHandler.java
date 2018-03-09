@@ -27,18 +27,35 @@ public abstract class AbstractRequestHandler<V extends Validable> implements Req
 		if(validRequestPayload.isValid())	{
 			return processImpl(validRequestPayload, urlParams);
 		}	else	{
-			return new Answer(HTTP_BAD_REQUEST, null);
+			return new Answer(HTTP_BAD_REQUEST, null, false);
 		}
 	}
 
 	abstract Answer processImpl(V validRequestPayload, Map<String, String> urlParams);
 
+	@SuppressWarnings("unchecked")
 	@Override
 	public Object handle(Request request, Response response) throws Exception {
-		V requestPayload = gson.fromJson(request.body(), TypeToken.get(requestPayloadClass).getType());
-		process(requestPayload, request.params());
+		Answer answer = null;
+		V requestPayload;
 		
-		return null;
+		if(EmptyRequestPayload.class.getName().equals(requestPayloadClass.getName()))	{
+			requestPayload = (V) new EmptyRequestPayload();
+		}	else	{
+			requestPayload = gson.fromJson(request.body(), TypeToken.get(requestPayloadClass).getType());
+		}
+		
+		
+		answer = process(requestPayload, request.params());
+			
+		if(answer.getShouldReturnJson())	{
+			response.type("application/json");
+		}
+		
+		response.status(answer.getHttpCode());
+		response.body(answer.getResponseBody());
+		
+		return response.body();
 	}
 	
 }

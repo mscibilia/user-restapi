@@ -18,13 +18,13 @@ public class DeleteUserRequestHandler extends AbstractRequestHandler<EmptyReques
 		try {
 			
 			if(UserHelper.getInstance().deleteUser(idOfUserToDelete))	{
-				return new Answer(200, "User deleted successfully");
+				return new Answer(200, "User deleted successfully", false);
 			}	else	{
-				return new Answer(404, "User with specified ID not found");
+				return new Answer(404, "User with specified ID not found", false);
 			}
 			
 		} catch (Exception e)	{
-			return new Answer(500, "User deletion failed: Server Error");
+			return new Answer(500, "User deletion failed: Server Error", false);
 		}
 	}
 

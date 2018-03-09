@@ -14,15 +14,15 @@ public class UpdateUserRequestHandler extends AbstractRequestHandler<IndividualU
 	@Override
 	public Answer processImpl(IndividualUserOperationRequestPayload updateUserRequestPayload, Map<String, String> urlParams) {
 		try {
-			User incomingUser = updateUserRequestPayload.getUser();
+			User incomingUser = new User(updateUserRequestPayload.getUserId(), updateUserRequestPayload.getUserName());
 			if(UserHelper.getInstance().updateUser(incomingUser))	{
-				return new Answer(200, "User update successful: " + incomingUser.toString());
+				return new Answer(200, "User update successful: " + incomingUser.toString(), false);
 			}	else	{
-				return new Answer(404, "User update failed: User not found");
+				return new Answer(404, "User update failed: User not found", false);
 			}
 			
 		} catch (Exception e) {
-			return new Answer(500, "User update failed: Server Error");
+			return new Answer(500, "User update failed: Server Error", false);
 		}
 	}
 

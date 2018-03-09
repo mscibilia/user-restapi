@@ -6,13 +6,13 @@ import app.persistence.UserHelper;
 
 public class GetAllUsersRequestHandler extends AbstractRequestHandler<EmptyRequestPayload> {
 
-	public GetAllUsersRequestHandler(Class<EmptyRequestPayload> requestPayload) {
-		super(requestPayload);
+	public GetAllUsersRequestHandler() {
+		super(EmptyRequestPayload.class);
 	}
 
 	@Override
 	public Answer processImpl(EmptyRequestPayload emptyRequestPayload, Map<String, String> urlParams) {
-		return new Answer(200, gson.toJson(UserHelper.getInstance().getUserList()));
+		return new Answer(200, gson.toJson(UserHelper.getInstance().getUserList()), true);
 	}
 
 

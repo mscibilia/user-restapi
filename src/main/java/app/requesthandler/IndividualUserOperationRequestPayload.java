@@ -1,28 +1,33 @@
 package app.requesthandler;
 
-import app.model.User;
-
 /**
  * Generic request payload for an operation (get, update, delete) on a single 'User' entity.
  */
 public class IndividualUserOperationRequestPayload implements Validable {
 	
-	private User user;
+	private int userId;
+	
+	private String userName;
 	
 	/**
 	 * @param user
 	 */
-	public IndividualUserOperationRequestPayload(User user) {
-		this.user = user;
+	public IndividualUserOperationRequestPayload(int id, String name) {
+		this.userId = id;
+		this.userName = name;
 	}
 
 
-	public User getUser() {
-		return user;
+	public int getUserId() {
+		return userId;
+	}
+	
+	public String getUserName() {
+		return userName;
 	}
 
 	@Override
 	public boolean isValid() {
-		return user != null && user.getName() != null;
+		return userName != null;
 	}
 }

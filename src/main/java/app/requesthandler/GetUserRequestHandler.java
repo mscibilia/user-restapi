@@ -17,9 +17,9 @@ public class GetUserRequestHandler extends AbstractRequestHandler<EmptyRequestPa
 		User user = UserHelper.getInstance().getUserById(idToSearch);
 		
 		if (user != null)	{
-			return new Answer(200, gson.toJson(user));
+			return new Answer(200, gson.toJson(user), true);
 		}	else	{
-			return new Answer(404, "User with specified ID not found");
+			return new Answer(404, "User with specified ID not found", false);
 		}
 	}
 

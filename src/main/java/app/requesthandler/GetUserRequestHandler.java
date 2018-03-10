@@ -7,8 +7,8 @@ import app.persistence.UserHelper;
 
 public class GetUserRequestHandler extends AbstractRequestHandler<EmptyRequestPayload> {
 
-	public GetUserRequestHandler(Class<EmptyRequestPayload> requestPayload) {
-		super(requestPayload);
+	public GetUserRequestHandler() {
+		super(EmptyRequestPayload.class);
 	}
 
 	@Override

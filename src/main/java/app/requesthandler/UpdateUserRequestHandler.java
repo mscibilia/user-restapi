@@ -7,14 +7,14 @@ import app.persistence.UserHelper;
 
 public class UpdateUserRequestHandler extends AbstractRequestHandler<IndividualUserOperationRequestPayload> {
 
-	public UpdateUserRequestHandler(Class<IndividualUserOperationRequestPayload> requestPayload) {
-		super(requestPayload);
+	public UpdateUserRequestHandler() {
+		super(IndividualUserOperationRequestPayload.class);
 	}
 
 	@Override
 	public Answer processImpl(IndividualUserOperationRequestPayload updateUserRequestPayload, Map<String, String> urlParams) {
 		try {
-			User incomingUser = new User(updateUserRequestPayload.getUserId(), updateUserRequestPayload.getUserName());
+			User incomingUser = new User(updateUserRequestPayload.getId(), updateUserRequestPayload.getName());
 			if(UserHelper.getInstance().updateUser(incomingUser))	{
 				return new Answer(200, "User update successful: " + incomingUser.toString(), false);
 			}	else	{

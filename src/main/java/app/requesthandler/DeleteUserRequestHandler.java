@@ -6,8 +6,8 @@ import app.persistence.UserHelper;
 
 public class DeleteUserRequestHandler extends AbstractRequestHandler<EmptyRequestPayload> {
 
-	public DeleteUserRequestHandler(Class<EmptyRequestPayload> requestPayload) {
-		super(requestPayload);
+	public DeleteUserRequestHandler() {
+		super(EmptyRequestPayload.class);
 	}
 
 	@Override

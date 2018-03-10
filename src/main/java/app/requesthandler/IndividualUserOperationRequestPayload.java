@@ -5,29 +5,29 @@ package app.requesthandler;
  */
 public class IndividualUserOperationRequestPayload implements Validable {
 	
-	private int userId;
+	private int id;
 	
-	private String userName;
+	private String name;
 	
 	/**
 	 * @param user
 	 */
 	public IndividualUserOperationRequestPayload(int id, String name) {
-		this.userId = id;
-		this.userName = name;
+		this.id = id;
+		this.name = name;
 	}
 
 
-	public int getUserId() {
-		return userId;
+	public int getId() {
+		return id;
 	}
 	
-	public String getUserName() {
-		return userName;
+	public String getName() {
+		return name;
 	}
 
 	@Override
 	public boolean isValid() {
-		return userName != null;
+		return name != null;
 	}
 }

@@ -5,17 +5,19 @@ public class Answer {
 	
 	private final String responseBody;
 	
-	private final boolean shouldReturnJson;
 
 	/**
 	 * @param httpCode
 	 * @param responseBody
-	 * @param shouldReturnJson
 	 */
-	public Answer(int httpCode, String responseBody, boolean shouldReturnJson) {
+	public Answer(int httpCode, String responseBody) {
 		this.httpCode = httpCode;
 		this.responseBody = responseBody;
-		this.shouldReturnJson = shouldReturnJson;
+	}
+	
+	public Answer(int httpCode) {
+		this.httpCode = httpCode;
+		this.responseBody = null;
 	}
 
 
@@ -35,18 +37,30 @@ public class Answer {
 	}
 
 
-	/**
-	 * @return the shouldReturnJson
-	 */
-	public boolean getShouldReturnJson() {
-		return shouldReturnJson;
-	}
-
 
 	@Override
 	public String toString() {
-		return "Answer [httpCode=" + httpCode + ", responseBody=" + responseBody + ", shouldReturnJson="
-				+ shouldReturnJson + "]";
+		return "Answer [httpCode=" + httpCode + ", responseBody=" + responseBody + "]";
 	}
+
+	@Override
+	public boolean equals(Object obj) {
+		if (this == obj)
+			return true;
+		if (obj == null)
+			return false;
+		if (getClass() != obj.getClass())
+			return false;
+		Answer other = (Answer) obj;
+		if (httpCode != other.httpCode)
+			return false;
+		if (responseBody == null) {
+			if (other.responseBody != null)
+				return false;
+		} else if (!responseBody.equals(other.responseBody))
+			return false;
+		return true;
+	}
+
 
 }

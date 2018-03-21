@@ -27,7 +27,7 @@ public abstract class AbstractRequestHandler<V extends Validable> implements Req
 		if(validRequestPayload.isValid())	{
 			return processImpl(validRequestPayload, urlParams);
 		}	else	{
-			return new Answer(HTTP_BAD_REQUEST, null, false);
+			return new Answer(HTTP_BAD_REQUEST);
 		}
 	}
 
@@ -48,7 +48,7 @@ public abstract class AbstractRequestHandler<V extends Validable> implements Req
 		
 		answer = process(requestPayload, request.params());
 			
-		if(answer.getShouldReturnJson())	{
+		if(shouldReturnJson(request))	{
 			response.type("application/json");
 		}
 		
@@ -56,6 +56,11 @@ public abstract class AbstractRequestHandler<V extends Validable> implements Req
 		response.body(answer.getResponseBody());
 		
 		return response.body();
+	}
+
+	private boolean shouldReturnJson(Request request) {
+		String acceptHeader = request.headers("Accept");
+		return acceptHeader != null && acceptHeader.contains("application/json");
 	}
 	
 }

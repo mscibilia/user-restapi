@@ -1,5 +1,7 @@
 package app.requesthandler;
 
+import app.Validable;
+
 /**
  * Generic request payload for an operation (get, update, delete) on a single 'User' entity.
  */

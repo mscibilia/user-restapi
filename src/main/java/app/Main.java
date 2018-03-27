@@ -7,6 +7,9 @@ import static spark.Spark.put;
 
 import java.util.List;
 
+import org.hibernate.SessionFactory;
+import org.hibernate.cfg.Configuration;
+
 import com.google.gson.Gson;
 
 import app.model.User;
@@ -22,15 +25,19 @@ public class Main {
 	
     public static void main(String[] args) {
         
-        get("/users", new GetAllUsersRequestHandler());
+        final SessionFactory sessionFactory = new Configuration().configure().buildSessionFactory();
+        
+		UserHelper userHelper = new UserHelper(sessionFactory);
+        
+		get("/users", new GetAllUsersRequestHandler(userHelper));
         
         
-		get("/users/:id", new GetUserRequestHandler());
+		get("/users/:id", new GetUserRequestHandler(userHelper));
 		
 		//Either implement this cleaner or get rid of it, Does it add value?
 		get("/users/byName/:name", (req, res) -> {
 			String nameToSearch = req.params(":name");
-			List<User> users = UserHelper.getInstance().getUsersByName(nameToSearch);
+			List<User> users = userHelper.getUsersByName(nameToSearch);
 			
 			if (users != null)	{
 				Gson gson = new Gson();
@@ -46,11 +53,11 @@ public class Main {
 		});
 
 		
-		post("/users/create", "application/json", new CreateUserRequestHandler());
+		post("/users/create", "application/json", new CreateUserRequestHandler(userHelper));
 		
-		put("/users/update","application/json", new UpdateUserRequestHandler());
+		put("/users/update","application/json", new UpdateUserRequestHandler(userHelper));
 		
-		delete("/users/:id", new DeleteUserRequestHandler());
+		delete("/users/:id", new DeleteUserRequestHandler(userHelper));
     }
     
     

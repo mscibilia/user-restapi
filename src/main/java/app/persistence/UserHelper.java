@@ -7,27 +7,18 @@ import javax.annotation.PreDestroy;
 import org.hibernate.Session;
 import org.hibernate.SessionFactory;
 import org.hibernate.Transaction;
-import org.hibernate.cfg.Configuration;
 import org.hibernate.query.Query;
 
 import app.model.User;
 
 public class UserHelper {
-	private static final UserHelper INSTANCE = new UserHelper();
 	
-	private static SessionFactory sessionFactory;
-	
-	static	{
-		sessionFactory = new Configuration().configure().buildSessionFactory();
-	}
+	private final SessionFactory sessionFactory;
 	
 	
-	public static UserHelper getInstance()	{
-		return INSTANCE;
-	}
 	
-	
-	private UserHelper()	{
+	public UserHelper(SessionFactory sessionFactory)	{
+		this.sessionFactory = sessionFactory;
 	}
 	
 	

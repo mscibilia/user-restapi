@@ -9,18 +9,7 @@ public class GetUserRequestHandler extends AbstractRequestHandler<EmptyRequestPa
 
 	private final UserHelper userHelper;
 	
-	public GetUserRequestHandler() {
-		this(UserHelper.getInstance());
-	}
-	
-	
-	/**
-	 * Constructor for the purpose of injecting a UserHelper
-	 * for testing purposes.
-	 * 
-	 * @param userHelper
-	 */
-	GetUserRequestHandler(UserHelper userHelper)	{
+	public GetUserRequestHandler(UserHelper userHelper)	{
 		super(EmptyRequestPayload.class);
 		this.userHelper = userHelper;
 	}

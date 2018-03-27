@@ -6,8 +6,11 @@ import app.persistence.UserHelper;
 
 public class DeleteUserRequestHandler extends AbstractRequestHandler<EmptyRequestPayload> {
 
-	public DeleteUserRequestHandler() {
+	private final UserHelper userHelper;
+	
+	public DeleteUserRequestHandler(UserHelper userHelper) {
 		super(EmptyRequestPayload.class);
+		this.userHelper = userHelper;
 	}
 
 	@Override
@@ -17,7 +20,7 @@ public class DeleteUserRequestHandler extends AbstractRequestHandler<EmptyReques
 		
 		try {
 			
-			if(UserHelper.getInstance().deleteUser(idOfUserToDelete))	{
+			if(userHelper.deleteUser(idOfUserToDelete))	{
 				return new Answer(200, "User deleted successfully");
 			}	else	{
 				return new Answer(404, "User with specified ID not found");

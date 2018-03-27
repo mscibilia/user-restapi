@@ -8,20 +8,11 @@ public class GetAllUsersRequestHandler extends AbstractRequestHandler<EmptyReque
 
 	private final UserHelper userHelper;
 	
-	public GetAllUsersRequestHandler() {
-		this(UserHelper.getInstance());
-	}
-	
-	/**
-	 * Constructor for the purpose of injecting a UserHelper
-	 * for testing purposes.
-	 * 
-	 * @param userHelper
-	 */
-	GetAllUsersRequestHandler(UserHelper userHelper) {
+	public GetAllUsersRequestHandler(UserHelper userHelper) {
 		super(EmptyRequestPayload.class);
 		this.userHelper = userHelper;
 	}
+	
 
 	@Override
 	public Answer processImpl(EmptyRequestPayload emptyRequestPayload, Map<String, String> urlParams) {

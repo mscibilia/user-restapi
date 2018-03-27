@@ -27,7 +27,7 @@ public class Main {
         
         final SessionFactory sessionFactory = new Configuration().configure().buildSessionFactory();
         
-		UserHelper userHelper = new UserHelper(sessionFactory);
+		final UserHelper userHelper = new UserHelper(sessionFactory);
         
 		get("/users", new GetAllUsersRequestHandler(userHelper));
         

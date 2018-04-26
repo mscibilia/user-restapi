@@ -1,4 +1,4 @@
-package app.requesthandler;
+package app;
 
 public interface Validable {
 

@@ -7,19 +7,22 @@ import app.persistence.UserHelper;
 
 public class GetUserRequestHandler extends AbstractRequestHandler<EmptyRequestPayload> {
 
-	public GetUserRequestHandler(Class<EmptyRequestPayload> requestPayload) {
-		super(requestPayload);
+	private final UserHelper userHelper;
+	
+	public GetUserRequestHandler(UserHelper userHelper)	{
+		super(EmptyRequestPayload.class);
+		this.userHelper = userHelper;
 	}
 
 	@Override
 	public Answer processImpl(EmptyRequestPayload emptyRequestPayload, Map<String, String> urlParams) {
 		Integer idToSearch = Integer.valueOf(urlParams.get(":id"));
-		User user = UserHelper.getInstance().getUserById(idToSearch);
+		User user = userHelper.getUserById(idToSearch);
 		
 		if (user != null)	{
 			return new Answer(200, gson.toJson(user));
 		}	else	{
-			return new Answer(4500, "User with specified ID not found");
+			return new Answer(404, "User with specified ID not found");
 		}
 	}
 

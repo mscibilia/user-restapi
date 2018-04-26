@@ -5,17 +5,20 @@ import java.util.Map;
 import app.model.User;
 import app.persistence.UserHelper;
 
-public class CreateUserRequestHandler extends AbstractRequestHandler<CreateUserRequestPayload> {
+public class CreateUserRequestHandler extends AbstractRequestHandler<IndividualUserOperationRequestPayload> {
 
-	public CreateUserRequestHandler(Class<CreateUserRequestPayload> requestPayload) {
-		super(requestPayload);
+	private final UserHelper userHelper;
+	
+	public CreateUserRequestHandler(UserHelper userHelper) {
+		super(IndividualUserOperationRequestPayload.class);
+		this.userHelper = userHelper;
 	}
 
 	@Override
-	public Answer processImpl(CreateUserRequestPayload createUserRequestPayload, Map<String, String> urlParams) {
+	public Answer processImpl(IndividualUserOperationRequestPayload createUserRequestPayload, Map<String, String> urlParams) {
 		try {
-			User incomingUser = createUserRequestPayload.getUser();
-			UserHelper.getInstance().addUser(incomingUser);
+			User incomingUser = new User(createUserRequestPayload.getId(), createUserRequestPayload.getName());
+			userHelper.addUser(incomingUser);
 			return new Answer(201, "User creation successful: " + incomingUser.toString());
 		} catch (Exception e) {
 			return new Answer(500, "User creation failed: Server Error");

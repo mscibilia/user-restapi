@@ -62,6 +62,8 @@ public class UserHelper {
      * @param name
      * @return true if user created and added successfully
      * 
+     * @deprecated use {@link #addUser(User)} instead
+     * 
      */
 	public boolean addUser(String idString, String name)	{
 		boolean success = false;
@@ -70,7 +72,12 @@ public class UserHelper {
 		if (idString != null && idString.matches("[0-9]+")) {
 			int id = Integer.valueOf(idString).intValue();
 			
-			addUser(new User(id, name));
+			try {
+				addUser(new User(id, name));
+			} catch (Exception e) {
+				success = false;
+			}
+			
 			success = true;
 		}
 		return success;
@@ -82,7 +89,7 @@ public class UserHelper {
 	 * 
 	 * @param user
 	 */
-	public void addUser(User user) {
+	public void addUser(User user) throws Exception {
 		Session session = sessionFactory.openSession();
 		Transaction tx = null;
 		try	{

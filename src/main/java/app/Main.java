@@ -7,8 +7,7 @@ import static spark.Spark.put;
 
 import java.util.List;
 
-import org.hibernate.SessionFactory;
-import org.hibernate.cfg.Configuration;
+import org.springframework.context.annotation.AnnotationConfigApplicationContext;
 
 import com.google.gson.Gson;
 
@@ -24,10 +23,12 @@ public class Main {
 	
 	
     public static void main(String[] args) {
+    	
+    	@SuppressWarnings("resource")
+		final AnnotationConfigApplicationContext applicationContext = new AnnotationConfigApplicationContext(AppConfig.class);
+    	applicationContext.registerShutdownHook();
         
-        final SessionFactory sessionFactory = new Configuration().configure().buildSessionFactory();
-        
-		final UserHelper userHelper = new UserHelper(sessionFactory);
+		final UserHelper userHelper = applicationContext.getBean(UserHelper.class);
         
 		get("/users", new GetAllUsersRequestHandler(userHelper));
         
@@ -58,6 +59,7 @@ public class Main {
 		put("/users/update","application/json", new UpdateUserRequestHandler(userHelper));
 		
 		delete("/users/:id", new DeleteUserRequestHandler(userHelper));
+		
     }
     
     

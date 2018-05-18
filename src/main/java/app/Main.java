@@ -12,6 +12,7 @@ import org.springframework.context.annotation.AnnotationConfigApplicationContext
 import com.google.gson.Gson;
 
 import app.model.User;
+import app.persistence.HibernateUserHelper;
 import app.persistence.UserHelper;
 import app.requesthandler.CreateUserRequestHandler;
 import app.requesthandler.DeleteUserRequestHandler;
@@ -28,7 +29,7 @@ public class Main {
 		final AnnotationConfigApplicationContext applicationContext = new AnnotationConfigApplicationContext(AppConfig.class);
     	applicationContext.registerShutdownHook();
         
-		final UserHelper userHelper = applicationContext.getBean(UserHelper.class);
+		final UserHelper userHelper = applicationContext.getBean(HibernateUserHelper.class);
         
 		get("/users", new GetAllUsersRequestHandler(userHelper));
         

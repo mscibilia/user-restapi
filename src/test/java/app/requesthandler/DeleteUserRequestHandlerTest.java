@@ -8,13 +8,14 @@ import java.util.Map;
 import org.junit.Test;
 import org.mockito.Mockito;
 
+import app.persistence.HibernateUserHelper;
 import app.persistence.UserHelper;
 
 public class DeleteUserRequestHandlerTest {
 
 	@Test
 	public void processShouldReturnSuccessCodeGivenUserDeletedSuccessfully() {
-		UserHelper mockUserHelper = Mockito.mock(UserHelper.class);
+		UserHelper mockUserHelper = Mockito.mock(HibernateUserHelper.class);
 		int idToDelete = 1;
 		Mockito.when(mockUserHelper.deleteUser(idToDelete)).thenReturn(true);
 		
@@ -29,7 +30,7 @@ public class DeleteUserRequestHandlerTest {
 	
 	@Test
 	public void processShouldReturnNotFoundCodeGivenUserDeletionFailed() {
-		UserHelper mockUserHelper = Mockito.mock(UserHelper.class);
+		UserHelper mockUserHelper = Mockito.mock(HibernateUserHelper.class);
 		int idToDelete = 1;
 		Mockito.when(mockUserHelper.deleteUser(idToDelete)).thenReturn(false);
 		

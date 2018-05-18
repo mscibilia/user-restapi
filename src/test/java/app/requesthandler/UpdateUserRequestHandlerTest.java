@@ -10,13 +10,14 @@ import org.junit.Test;
 import org.mockito.Mockito;
 
 import app.model.User;
+import app.persistence.HibernateUserHelper;
 import app.persistence.UserHelper;
 
 public class UpdateUserRequestHandlerTest {
 
 	@Test
 	public void processShouldReturnSuccessCodeGivenUpdateIsSuccessful() {
-		UserHelper mockUserHelper = Mockito.mock(UserHelper.class);
+		UserHelper mockUserHelper = Mockito.mock(HibernateUserHelper.class);
 		Mockito.when(mockUserHelper.updateUser(new User(1, "name"))).thenReturn(true);
 		UpdateUserRequestHandler sut = new UpdateUserRequestHandler(mockUserHelper);
 		
@@ -30,7 +31,7 @@ public class UpdateUserRequestHandlerTest {
 	
 	@Test
 	public void processShouldReturnNotFoundCodeGivenUpdateFails() {
-		UserHelper mockUserHelper = Mockito.mock(UserHelper.class);
+		UserHelper mockUserHelper = Mockito.mock(HibernateUserHelper.class);
 		Mockito.when(mockUserHelper.updateUser(new User(1, "name"))).thenReturn(false);
 		UpdateUserRequestHandler sut = new UpdateUserRequestHandler(mockUserHelper);
 		
@@ -44,7 +45,7 @@ public class UpdateUserRequestHandlerTest {
 	
 	@Test
 	public void processShouldReturnServerErrorCodeGivenExceptionIsThrown() {
-		UserHelper mockUserHelper = Mockito.mock(UserHelper.class);
+		UserHelper mockUserHelper = Mockito.mock(HibernateUserHelper.class);
 		Mockito.when(mockUserHelper.updateUser(new User(1, "name"))).thenThrow(new HibernateException("Update Failed"));
 		UpdateUserRequestHandler sut = new UpdateUserRequestHandler(mockUserHelper);
 		

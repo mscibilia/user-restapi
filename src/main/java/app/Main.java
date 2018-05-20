@@ -7,12 +7,13 @@ import static spark.Spark.put;
 
 import java.util.List;
 
+import org.springframework.context.ApplicationContext;
 import org.springframework.context.annotation.AnnotationConfigApplicationContext;
+import org.springframework.context.support.AbstractApplicationContext;
 
 import com.google.gson.Gson;
 
 import app.model.User;
-import app.persistence.HibernateUserHelper;
 import app.persistence.UserHelper;
 import app.requesthandler.CreateUserRequestHandler;
 import app.requesthandler.DeleteUserRequestHandler;
@@ -26,10 +27,10 @@ public class Main {
     public static void main(String[] args) {
     	
     	@SuppressWarnings("resource")
-		final AnnotationConfigApplicationContext applicationContext = new AnnotationConfigApplicationContext(AppConfig.class);
-    	applicationContext.registerShutdownHook();
+		final ApplicationContext applicationContext = new AnnotationConfigApplicationContext(AppConfig.class);
+    	((AbstractApplicationContext) applicationContext).registerShutdownHook();
         
-		final UserHelper userHelper = applicationContext.getBean(HibernateUserHelper.class);
+		final UserHelper userHelper = applicationContext.getBean(UserHelper.class);
         
 		get("/users", new GetAllUsersRequestHandler(userHelper));
         

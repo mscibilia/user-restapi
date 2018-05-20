@@ -10,9 +10,9 @@ import app.persistence.UserHelper;
 @Configuration
 public class AppConfig {
 
-	@Bean
+	@Bean(name="userHelper")
 	@Scope("singleton")
-	public UserHelper userHelper()	{
+	public UserHelper getUserHelper()	{
 		return new HibernateUserHelper(new org.hibernate.cfg.Configuration().configure().buildSessionFactory());
 	}
 	

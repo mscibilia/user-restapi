@@ -6,13 +6,13 @@ import org.junit.Test;
 import org.mockito.Mockito;
 
 import app.model.User;
-import app.persistence.UserHelper;
+import app.persistence.HibernateUserHelper;
 
 public class CreateUserRequestHandlerTest {
 
 	@Test
 	public void processShouldReturnSuccessCodeGivenUserCreationIsSuccessful() throws Exception {
-		UserHelper mockUserHelper = Mockito.mock(UserHelper.class);
+		HibernateUserHelper mockUserHelper = Mockito.mock(HibernateUserHelper.class);
 		Mockito.doNothing().when(mockUserHelper).addUser(Mockito.any(User.class));
 		
 		CreateUserRequestHandler sut = new CreateUserRequestHandler(mockUserHelper);
@@ -25,7 +25,7 @@ public class CreateUserRequestHandlerTest {
 	
 	@Test
 	public void processShouldReturnErrorCodeGivenUserCreationFails() throws Exception {
-		UserHelper mockUserHelper = Mockito.mock(UserHelper.class);
+		HibernateUserHelper mockUserHelper = Mockito.mock(HibernateUserHelper.class);
 		Mockito.doThrow(new Exception()).when(mockUserHelper).addUser(Mockito.any(User.class));
 		
 		CreateUserRequestHandler sut = new CreateUserRequestHandler(mockUserHelper);

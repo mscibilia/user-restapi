@@ -13,13 +13,14 @@ import org.mockito.Mockito;
 import com.google.gson.Gson;
 
 import app.model.User;
+import app.persistence.HibernateUserHelper;
 import app.persistence.UserHelper;
 
 public class GetAllUsersRequestHandlerTest {
 
 	@Test
 	public void processShouldReturnSuccessAndUserList() {
-		UserHelper mockUserHelper = Mockito.mock(UserHelper.class);
+		UserHelper mockUserHelper = Mockito.mock(HibernateUserHelper.class);
 		List<User> userListInDb = new ArrayList<>();
 		userListInDb.add(new User(1, "john"));
 		userListInDb.add(new User(2, "jane"));

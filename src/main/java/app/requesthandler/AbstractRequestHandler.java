@@ -38,7 +38,6 @@ public abstract class AbstractRequestHandler<V extends Validable> implements Req
 	@SuppressWarnings("unchecked")
 	@Override
 	public Object handle(Request request, Response response) throws Exception {
-		Answer answer = null;
 		V requestPayload;
 		
 		if(EmptyRequestPayload.class.getName().equals(requestPayloadClass.getName()))	{
@@ -48,7 +47,7 @@ public abstract class AbstractRequestHandler<V extends Validable> implements Req
 		}
 		
 		
-		answer = process(requestPayload, request.params());
+		Answer answer = process(requestPayload, request.params());
 			
 		if(shouldReturnJson(request))	{
 			response.type("application/json");

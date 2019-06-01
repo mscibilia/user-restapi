@@ -1,6 +1,6 @@
 package app.requesthandler;
 
-import static org.junit.Assert.*;
+import static org.junit.Assert.assertEquals;
 
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -13,21 +13,20 @@ import org.mockito.Mockito;
 import com.google.gson.Gson;
 
 import app.model.User;
-import app.persistence.HibernateUserHelper;
-import app.persistence.UserHelper;
+import app.repository.UserRepository;
 
 public class GetAllUsersRequestHandlerTest {
 
 	@Test
 	public void processShouldReturnSuccessAndUserList() {
-		UserHelper mockUserHelper = Mockito.mock(HibernateUserHelper.class);
+		UserRepository mockUserRepository = Mockito.mock(UserRepository.class);
 		List<User> userListInDb = new ArrayList<>();
 		userListInDb.add(new User(1, "john"));
 		userListInDb.add(new User(2, "jane"));
 		
-		Mockito.when(mockUserHelper.getUserList()).thenReturn(userListInDb);
+		//Mockito.when(mockUserRepository.getUserList()).thenReturn(userListInDb);
 		
-		GetAllUsersRequestHandler sut = new GetAllUsersRequestHandler(mockUserHelper);
+		GetAllUsersRequestHandler sut = new GetAllUsersRequestHandler(mockUserRepository);
 		
 		Map<String, String> urlParams = new HashMap<>();
 		Answer result = sut.process(new EmptyRequestPayload(), urlParams);

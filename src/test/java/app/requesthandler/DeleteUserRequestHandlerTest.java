@@ -1,6 +1,6 @@
 package app.requesthandler;
 
-import static org.junit.Assert.*;
+import static org.junit.Assert.assertEquals;
 
 import java.util.HashMap;
 import java.util.Map;
@@ -8,18 +8,17 @@ import java.util.Map;
 import org.junit.Test;
 import org.mockito.Mockito;
 
-import app.persistence.HibernateUserHelper;
-import app.persistence.UserHelper;
+import app.repository.UserRepository;
 
 public class DeleteUserRequestHandlerTest {
 
 	@Test
 	public void processShouldReturnSuccessCodeGivenUserDeletedSuccessfully() {
-		UserHelper mockUserHelper = Mockito.mock(HibernateUserHelper.class);
+		UserRepository mockUserRepository = Mockito.mock(UserRepository.class);
 		int idToDelete = 1;
-		Mockito.when(mockUserHelper.deleteUser(idToDelete)).thenReturn(true);
+		//Mockito.when(mockUserRepository.deleteUser(idToDelete)).thenReturn(true);
 		
-		DeleteUserRequestHandler sut = new DeleteUserRequestHandler(mockUserHelper);
+		DeleteUserRequestHandler sut = new DeleteUserRequestHandler(mockUserRepository);
 		
 		Map<String, String> urlParams = new HashMap<>();
 		urlParams.put(":id", String.valueOf(idToDelete));
@@ -30,11 +29,11 @@ public class DeleteUserRequestHandlerTest {
 	
 	@Test
 	public void processShouldReturnNotFoundCodeGivenUserDeletionFailed() {
-		UserHelper mockUserHelper = Mockito.mock(HibernateUserHelper.class);
+		UserRepository mockUserRepository = Mockito.mock(UserRepository.class);
 		int idToDelete = 1;
-		Mockito.when(mockUserHelper.deleteUser(idToDelete)).thenReturn(false);
+		//Mockito.when(mockUserRepository.deleteUser(idToDelete)).thenReturn(false);
 		
-		DeleteUserRequestHandler sut = new DeleteUserRequestHandler(mockUserHelper);
+		DeleteUserRequestHandler sut = new DeleteUserRequestHandler(mockUserRepository);
 		
 		Map<String, String> urlParams = new HashMap<>();
 		urlParams.put(":id", String.valueOf(idToDelete));

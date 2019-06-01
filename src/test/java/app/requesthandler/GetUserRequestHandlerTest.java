@@ -11,18 +11,17 @@ import org.mockito.Mockito;
 import com.google.gson.Gson;
 
 import app.model.User;
-import app.persistence.HibernateUserHelper;
-import app.persistence.UserHelper;
+import app.repository.UserRepository;
 
 public class GetUserRequestHandlerTest {
 
 	@Test
 	public void processShouldReturnSuccessCodeAndUserGivenRequestForUserThatExists() {
-		UserHelper mockUserHelper = Mockito.mock(HibernateUserHelper.class);
+		UserRepository mockUserRepository = Mockito.mock(UserRepository.class);
 		int userId = 1;
 		User userInDb = new User(userId, "test");
-		Mockito.when(mockUserHelper.getUserById(userId)).thenReturn(userInDb);
-		GetUserRequestHandler sut = new GetUserRequestHandler(mockUserHelper);
+		//Mockito.when(mockUserRepository.getUserById(userId)).thenReturn(userInDb);
+		GetUserRequestHandler sut = new GetUserRequestHandler(mockUserRepository);
 		
 		Map<String, String> urlParams = new HashMap<>();
 		urlParams.put(":id", String.valueOf(userId));
@@ -35,12 +34,12 @@ public class GetUserRequestHandlerTest {
 	
 	@Test
 	public void processShouldReturnNotFoundCodeGivenRequestForUserThatDoesNotExists() {
-		UserHelper mockUserHelper = Mockito.mock(HibernateUserHelper.class);
+		UserRepository mockUserRepository = Mockito.mock(UserRepository.class);
 		int userId = 1;
 		int otherUserId = 2;
 		User userInDb = new User(userId, "test");
-		Mockito.when(mockUserHelper.getUserById(userId)).thenReturn(userInDb);
-		GetUserRequestHandler sut = new GetUserRequestHandler(mockUserHelper);
+		//Mockito.when(mockUserRepository.getUserById(userId)).thenReturn(userInDb);
+		GetUserRequestHandler sut = new GetUserRequestHandler(mockUserRepository);
 		
 		Map<String, String> urlParams = new HashMap<>();
 		urlParams.put(":id", String.valueOf(otherUserId));

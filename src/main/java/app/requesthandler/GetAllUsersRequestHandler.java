@@ -2,21 +2,21 @@ package app.requesthandler;
 
 import java.util.Map;
 
-import app.persistence.UserHelper;
+import app.repository.UserRepository;
 
 public class GetAllUsersRequestHandler extends AbstractRequestHandler<EmptyRequestPayload> {
 
-	private final UserHelper userHelper;
+	private final UserRepository userRepository;
 	
-	public GetAllUsersRequestHandler(UserHelper userHelper) {
+	public GetAllUsersRequestHandler(UserRepository userHelper) {
 		super(EmptyRequestPayload.class);
-		this.userHelper = userHelper;
+		this.userRepository = userHelper;
 	}
 	
 
 	@Override
 	public Answer processImpl(EmptyRequestPayload emptyRequestPayload, Map<String, String> urlParams) {
-		return new Answer(200, gson.toJson(userHelper.getUserList()));
+		return new Answer(200, gson.toJson(userRepository.findAll()));
 	}
 
 

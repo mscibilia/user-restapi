@@ -1,25 +1,30 @@
 package app.requesthandler;
 
-import static org.junit.Assert.*;
+import static org.junit.Assert.assertEquals;
 
 import java.util.HashMap;
 import java.util.Map;
 
-import org.hibernate.HibernateException;
 import org.junit.Test;
+import org.junit.runner.RunWith;
+import org.mockito.Mock;
 import org.mockito.Mockito;
+import org.mockito.junit.MockitoJUnitRunner;
+import org.springframework.dao.DataAccessResourceFailureException;
 
 import app.model.User;
-import app.persistence.HibernateUserHelper;
-import app.persistence.UserHelper;
+import app.repository.UserRepository;
 
+@RunWith(MockitoJUnitRunner.class)
 public class UpdateUserRequestHandlerTest {
+	
+	@Mock
+	private UserRepository mockUserRepository;
 
 	@Test
 	public void processShouldReturnSuccessCodeGivenUpdateIsSuccessful() {
-		UserHelper mockUserHelper = Mockito.mock(HibernateUserHelper.class);
-		Mockito.when(mockUserHelper.updateUser(new User(1, "name"))).thenReturn(true);
-		UpdateUserRequestHandler sut = new UpdateUserRequestHandler(mockUserHelper);
+		Mockito.when(mockUserRepository.save(Mockito.any(User.class))).thenReturn(new User());
+		UpdateUserRequestHandler sut = new UpdateUserRequestHandler(mockUserRepository);
 		
 		IndividualUserOperationRequestPayload validRequestPayload = new IndividualUserOperationRequestPayload(1, "name");
 		Map<String, String> urlParams = new HashMap<>();
@@ -29,25 +34,11 @@ public class UpdateUserRequestHandlerTest {
 		assertEquals(200, result.getHttpCode());
 	}
 	
-	@Test
-	public void processShouldReturnNotFoundCodeGivenUpdateFails() {
-		UserHelper mockUserHelper = Mockito.mock(HibernateUserHelper.class);
-		Mockito.when(mockUserHelper.updateUser(new User(1, "name"))).thenReturn(false);
-		UpdateUserRequestHandler sut = new UpdateUserRequestHandler(mockUserHelper);
-		
-		IndividualUserOperationRequestPayload validRequestPayload = new IndividualUserOperationRequestPayload(1, "name");
-		Map<String, String> urlParams = new HashMap<>();
-		
-		Answer result = sut.process(validRequestPayload, urlParams);
-		
-		assertEquals(404, result.getHttpCode());
-	}
 	
 	@Test
 	public void processShouldReturnServerErrorCodeGivenExceptionIsThrown() {
-		UserHelper mockUserHelper = Mockito.mock(HibernateUserHelper.class);
-		Mockito.when(mockUserHelper.updateUser(new User(1, "name"))).thenThrow(new HibernateException("Update Failed"));
-		UpdateUserRequestHandler sut = new UpdateUserRequestHandler(mockUserHelper);
+		Mockito.when(mockUserRepository.save(Mockito.any(User.class))).thenThrow(new DataAccessResourceFailureException("Failed"));
+		UpdateUserRequestHandler sut = new UpdateUserRequestHandler(mockUserRepository);
 		
 		IndividualUserOperationRequestPayload validRequestPayload = new IndividualUserOperationRequestPayload(1, "name");
 		Map<String, String> urlParams = new HashMap<>();

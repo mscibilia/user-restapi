@@ -1,29 +1,31 @@
 package app.requesthandler;
 
 import java.util.Map;
+import java.util.NoSuchElementException;
 
 import app.model.User;
-import app.persistence.UserHelper;
+import app.repository.UserRepository;
 
 public class GetUserRequestHandler extends AbstractRequestHandler<EmptyRequestPayload> {
 
-	private final UserHelper userHelper;
+	private final UserRepository userRepository;
 	
-	public GetUserRequestHandler(UserHelper userHelper)	{
+	public GetUserRequestHandler(UserRepository userHelper)	{
 		super(EmptyRequestPayload.class);
-		this.userHelper = userHelper;
+		this.userRepository = userHelper;
 	}
 
 	@Override
 	public Answer processImpl(EmptyRequestPayload emptyRequestPayload, Map<String, String> urlParams) {
 		Integer idToSearch = Integer.valueOf(urlParams.get(":id"));
-		User user = userHelper.getUserById(idToSearch);
-		
-		if (user != null)	{
+		try	{
+			User user = userRepository.findById(idToSearch).get();
 			return new Answer(200, gson.toJson(user));
-		}	else	{
+			
+		} catch (NoSuchElementException e)	{
 			return new Answer(404, "User with specified ID not found");
 		}
+		
 	}
 
 

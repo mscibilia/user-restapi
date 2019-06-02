@@ -6,17 +6,24 @@ import java.util.HashMap;
 import java.util.Map;
 
 import org.junit.Test;
+import org.junit.runner.RunWith;
+import org.mockito.Mock;
 import org.mockito.Mockito;
+import org.mockito.junit.MockitoJUnitRunner;
+import org.springframework.dao.DataAccessResourceFailureException;
 
 import app.repository.UserRepository;
 
+@RunWith(MockitoJUnitRunner.class)
 public class DeleteUserRequestHandlerTest {
+	
+	@Mock
+	private UserRepository mockUserRepository;
 
 	@Test
-	public void processShouldReturnSuccessCodeGivenUserDeletedSuccessfully() {
-		UserRepository mockUserRepository = Mockito.mock(UserRepository.class);
+	public void processShouldReturnSuccessCodeGivenNoExpceptionIsThrown() {
 		int idToDelete = 1;
-		//Mockito.when(mockUserRepository.deleteUser(idToDelete)).thenReturn(true);
+		Mockito.doNothing().when(mockUserRepository).deleteById(idToDelete);
 		
 		DeleteUserRequestHandler sut = new DeleteUserRequestHandler(mockUserRepository);
 		
@@ -29,17 +36,15 @@ public class DeleteUserRequestHandlerTest {
 	
 	@Test
 	public void processShouldReturnNotFoundCodeGivenUserDeletionFailed() {
-		UserRepository mockUserRepository = Mockito.mock(UserRepository.class);
 		int idToDelete = 1;
-		//Mockito.when(mockUserRepository.deleteUser(idToDelete)).thenReturn(false);
-		
+		Mockito.doThrow(DataAccessResourceFailureException.class).when(mockUserRepository).deleteById(idToDelete);
 		DeleteUserRequestHandler sut = new DeleteUserRequestHandler(mockUserRepository);
 		
 		Map<String, String> urlParams = new HashMap<>();
 		urlParams.put(":id", String.valueOf(idToDelete));
 		Answer result  = sut.process(new EmptyRequestPayload(), urlParams);
 		
-		assertEquals(404, result.getHttpCode());
+		assertEquals(500, result.getHttpCode());
 	}
 
 }

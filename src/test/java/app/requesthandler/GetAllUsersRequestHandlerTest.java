@@ -8,23 +8,29 @@ import java.util.List;
 import java.util.Map;
 
 import org.junit.Test;
+import org.junit.runner.RunWith;
+import org.mockito.Mock;
 import org.mockito.Mockito;
+import org.mockito.junit.MockitoJUnitRunner;
 
 import com.google.gson.Gson;
 
 import app.model.User;
 import app.repository.UserRepository;
 
+@RunWith(MockitoJUnitRunner.class)
 public class GetAllUsersRequestHandlerTest {
+	
+	@Mock
+	private UserRepository mockUserRepository;
 
 	@Test
 	public void processShouldReturnSuccessAndUserList() {
-		UserRepository mockUserRepository = Mockito.mock(UserRepository.class);
 		List<User> userListInDb = new ArrayList<>();
 		userListInDb.add(new User(1, "john"));
 		userListInDb.add(new User(2, "jane"));
 		
-		//Mockito.when(mockUserRepository.getUserList()).thenReturn(userListInDb);
+		Mockito.when(mockUserRepository.findAll()).thenReturn(userListInDb);
 		
 		GetAllUsersRequestHandler sut = new GetAllUsersRequestHandler(mockUserRepository);
 		

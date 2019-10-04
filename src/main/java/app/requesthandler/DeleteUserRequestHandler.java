@@ -2,15 +2,15 @@ package app.requesthandler;
 
 import java.util.Map;
 
-import app.persistence.UserHelper;
+import app.repository.UserRepository;
 
 public class DeleteUserRequestHandler extends AbstractRequestHandler<EmptyRequestPayload> {
 
-	private final UserHelper userHelper;
+	private final UserRepository userRepository;
 	
-	public DeleteUserRequestHandler(UserHelper userHelper) {
+	public DeleteUserRequestHandler(UserRepository userHelper) {
 		super(EmptyRequestPayload.class);
-		this.userHelper = userHelper;
+		this.userRepository = userHelper;
 	}
 
 	@Override
@@ -19,12 +19,8 @@ public class DeleteUserRequestHandler extends AbstractRequestHandler<EmptyReques
 		Integer idOfUserToDelete = Integer.valueOf(urlParams.get(":id"));
 		
 		try {
-			
-			if(userHelper.deleteUser(idOfUserToDelete))	{
-				return new Answer(200, "User deleted successfully");
-			}	else	{
-				return new Answer(404, "User with specified ID not found");
-			}
+			userRepository.deleteById(idOfUserToDelete);
+			return new Answer(200, "User deleted successfully");
 			
 		} catch (Exception e)	{
 			return new Answer(500, "User deletion failed: Server Error");

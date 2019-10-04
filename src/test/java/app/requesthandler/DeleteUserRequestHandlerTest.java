@@ -1,25 +1,31 @@
 package app.requesthandler;
 
-import static org.junit.Assert.*;
+import static org.junit.Assert.assertEquals;
 
 import java.util.HashMap;
 import java.util.Map;
 
 import org.junit.Test;
+import org.junit.runner.RunWith;
+import org.mockito.Mock;
 import org.mockito.Mockito;
+import org.mockito.junit.MockitoJUnitRunner;
+import org.springframework.dao.DataAccessResourceFailureException;
 
-import app.persistence.HibernateUserHelper;
-import app.persistence.UserHelper;
+import app.repository.UserRepository;
 
+@RunWith(MockitoJUnitRunner.class)
 public class DeleteUserRequestHandlerTest {
+	
+	@Mock
+	private UserRepository mockUserRepository;
 
 	@Test
-	public void processShouldReturnSuccessCodeGivenUserDeletedSuccessfully() {
-		UserHelper mockUserHelper = Mockito.mock(HibernateUserHelper.class);
+	public void processShouldReturnSuccessCodeGivenNoExpceptionIsThrown() {
 		int idToDelete = 1;
-		Mockito.when(mockUserHelper.deleteUser(idToDelete)).thenReturn(true);
+		Mockito.doNothing().when(mockUserRepository).deleteById(idToDelete);
 		
-		DeleteUserRequestHandler sut = new DeleteUserRequestHandler(mockUserHelper);
+		DeleteUserRequestHandler sut = new DeleteUserRequestHandler(mockUserRepository);
 		
 		Map<String, String> urlParams = new HashMap<>();
 		urlParams.put(":id", String.valueOf(idToDelete));
@@ -30,17 +36,15 @@ public class DeleteUserRequestHandlerTest {
 	
 	@Test
 	public void processShouldReturnNotFoundCodeGivenUserDeletionFailed() {
-		UserHelper mockUserHelper = Mockito.mock(HibernateUserHelper.class);
 		int idToDelete = 1;
-		Mockito.when(mockUserHelper.deleteUser(idToDelete)).thenReturn(false);
-		
-		DeleteUserRequestHandler sut = new DeleteUserRequestHandler(mockUserHelper);
+		Mockito.doThrow(DataAccessResourceFailureException.class).when(mockUserRepository).deleteById(idToDelete);
+		DeleteUserRequestHandler sut = new DeleteUserRequestHandler(mockUserRepository);
 		
 		Map<String, String> urlParams = new HashMap<>();
 		urlParams.put(":id", String.valueOf(idToDelete));
 		Answer result  = sut.process(new EmptyRequestPayload(), urlParams);
 		
-		assertEquals(404, result.getHttpCode());
+		assertEquals(500, result.getHttpCode());
 	}
 
 }
